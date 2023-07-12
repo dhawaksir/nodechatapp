@@ -1,0 +1,475 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+  <title>chat Signup</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    /* Reset default margin and padding */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Set background color and font styles */
+    body {
+      background-color:black;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Container styles */
+    .signup-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .form-container {
+      background-color: #262626;
+      border-radius: 10px;
+      padding: 40px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      width: 400px;
+      animation: fadeIn 1s ease;
+    }
+
+    .form-container h1 {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 30px;
+      color: #00ff00;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 40px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #ffffff;
+    }
+
+    .form-group .input-container {
+      position: relative;
+    }
+
+    .form-group .input-container input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 5px;
+      border: none;
+      background-color: #444;
+      color: #ffffff;
+      font-size: 1rem;
+      letter-spacing: 2px;
+    }
+
+    .form-group .input-container input:focus {
+      outline: none;
+    }
+
+    .form-group .input-container .snake-input {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 3px;
+      background-color: #00ff00;
+      transition: width 0.3s ease;
+    }
+
+    .form-group .input-container input:focus ~ .snake-input {
+      width: 0;
+    }
+
+    .form-group input[type="submit"] {
+      margin-top: 20px;
+      padding: 12px 24px;
+      border-radius: 5px;
+      border: none;
+      background-color: #00ff00;
+      font-size: 16px;
+      color: #000;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .signup-button:active {
+    background-color: darkgreen;
+  }
+    
+    .form-group button.signup-button {
+			background-color: #6efb6e;
+      font-size: 20px;
+		}
+
+    .form-group input[type="submit"]:hover {
+      background-color: #00cc00;
+  
+    }
+
+    .login-link {
+      color: #fff;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .login-link a {
+      color: #40d517;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .login-link a:hover {
+      color: #00ff00;
+    }
+
+    /* Animation styles */
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-container">
+    <div class="form-container">
+      <h1>Chat Signup</h1>
+      <form id="signupForm">
+        <div class="form-group">
+          <label for="username">Username:</label>
+          <div class="input-container">
+            <input type="text" id="username" name="username" required placeholder="Enter your username">
+            <div class="snake-input"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <div class="input-container">
+            <input type="password" id="password" name="password" required placeholder="Enter your password">
+            <div class="snake-input"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password:</label>
+          <div class="input-container">
+            <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password">
+            <div class="snake-input"></div>
+          </div>
+        </div>
+        <div class="form-group centered-buttons">
+          <button type="submit" class="signup-button">Sign up</button>
+        </div>
+      </form>
+      <div class="error" id="errorContainer"></div>
+      <div class="login-link">
+        <p>Already have an account? <a href="login.html">Log In</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const signupForm = document.getElementById('signupForm');
+
+    signupForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      if (password !== confirmPassword) {
+        document.getElementById('errorContainer').innerText = "Passwords do not match";
+      } else {
+        // Save user data to local storage
+        const userData = {
+          username,
+          password
+        };
+        localStorage.setItem('userData', JSON.stringify(userData));
+
+        alert(`Registration Successful!\nUsername: ${username}\nPassword: ${password}`);
+
+        // Redirect to the login page
+        window.location.href = "login.html";
+      }
+    });
+  </script>
+</body>
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chat Signup</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    /* Reset default margin and padding */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Set background color and font styles */
+    body {
+      background-color:black;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Container styles */
+    .signup-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .form-container {
+      background-color: #262626;
+      border-radius: 10px;
+      padding: 40px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      width: 400px;
+      animation: fadeIn 1s ease;
+    }
+
+    .form-container h1 {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 30px;
+      color: #00ff00;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 40px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #ffffff;
+    }
+
+    .form-group .input-container {
+      position: relative;
+    }
+
+    .form-group .input-container input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 5px;
+      border: none;
+      background-color: #444;
+      color: #ffffff;
+      font-size: 1rem;
+      letter-spacing: 2px;
+    }
+
+    .form-group .input-container input:focus {
+      outline: none;
+    }
+
+    .form-group .input-container .snake-input {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 3px;
+      background-color: #00ff00;
+      transition: width 0.3s ease;
+    }
+
+    .form-group .input-container input:focus ~ .snake-input {
+      width: 0;
+    }
+
+    .form-group input[type="submit"] {
+      margin-top: 20px;
+      padding: 12px 24px;
+      border-radius: 5px;
+      border: none;
+      background-color: #00ff00;
+      font-size: 16px;
+      color: #000;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .form-group input[type="submit"]:hover {
+      background-color: #00cc00;
+    }
+
+    .form-group input[type="submit"]:active {
+      background-color: darkgreen;
+    }
+
+    .login-link {
+      color: #fff;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .login-link a {
+      color: #40d517;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .login-link a:hover {
+      color: #00ff00;
+    }
+
+    /* Animation styles */
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Highlight styles */
+    .highlight {
+      background-color: #6efb6e;
+    }
+
+    /* Error styles */
+    .error {
+      color: #ff0000;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-container">
+    <div class="form-container">
+      <h1>Chat Signup</h1>
+      <form id="signupForm">
+        <div class="form-group">
+          <label for="username">Username:</label>
+          <div class="input-container">
+            <input type="text" id="username" name="username" required placeholder="Enter your username">
+            <div class="snake-input"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <div class="input-container">
+            <input type="password" id="password" name="password" required placeholder="Enter your password">
+            <div class="snake-input"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password:</label>
+          <div class="input-container">
+            <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password">
+            <div class="snake-input"></div>
+          </div>
+        </div>
+        <div class="form-group centered-buttons">
+          <button type="submit" class="signup-button">Sign up</button>
+        </div>
+      </form>
+      <div class="error" id="errorContainer"></div>
+      <div class="login-link">
+        <p>Already have an account? <a href="login.html">Log In</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const signupForm = document.getElementById('signupForm');
+  
+    signupForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+  
+      const usernameInput = document.getElementById('username');
+      const passwordInput = document.getElementById('password');
+      const confirmPasswordInput = document.getElementById('confirmPassword');
+  
+      const username = usernameInput.value;
+      const password = passwordInput.value;
+      const confirmPassword = confirmPasswordInput.value;
+  
+      if (password !== confirmPassword) {
+        document.getElementById('errorContainer').innerText = "Passwords do not match";
+      } else {
+        // Remove any previous highlighting
+        usernameInput.classList.remove('highlight');
+        passwordInput.classList.remove('highlight');
+        confirmPasswordInput.classList.remove('highlight');
+  
+        // Send user registration data to the server for further processing
+        const userData = {
+          username,
+          password
+        };
+  
+        // Make an API request to register the user
+        fetch('/api/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(userData)
+        })
+          .then(response => {
+            if (response.ok) {
+              // Registration successful
+              alert(`Registration Successful!\nUsername: ${username}`);
+              // Redirect to the login page
+              window.location.href = "login.html";
+            } else if (response.status === 409) {
+              // Username already exists
+              throw new Error('Username already exists');
+            } else {
+              // Other registration errors
+              throw new Error('Registration failed');
+            }
+          })
+          .catch(error => {
+            document.getElementById('errorContainer').innerText = error.message;
+          });
+      }
+    });
+  
+    // Highlight input fields on focus
+    const inputFields = document.querySelectorAll('.form-group input');
+    inputFields.forEach(input => {
+      input.addEventListener('focus', () => {
+        input.classList.add('highlight');
+      });
+      input.addEventListener('blur', () => {
+        input.classList.remove('highlight');
+      });
+    });
+  </script>
+  
+</body>
+</html>

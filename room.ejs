@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-v+KIXwpyJmUqokz6+fRVlM4dNRiNkgJREkz1oIm/vQl7lbXYfLQvwM/9zG/5NnN5DGZqJ4uVpy+0W/kMVN1FpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/socket.io/socket.io.js" defer></script>
+  <script src="script.js" defer></script>
+  <title>Video Call Room</title>
+  <style>
+    #video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 300px);
+      grid-auto-rows: 300px;
+    }
+    
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+  <div id="video-grid"></div>
+  <button id="videoCallButton"><i class="fas fa-video"></i></button>
+  <script>
+    document.getElementById('videoCallButton').addEventListener('click', startVideoCall);
+
+    function startVideoCall() {
+      const callId = generateCallId(); // Generate a unique call ID
+      window.location.href = `/video-call/<%= roomId %>/${callId}`; // Redirect to the video call room with the room ID and call ID
+    }
+
+    function generateCallId() {
+      // Generate a random UUID for the call ID
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0,
+          v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+  </script>
+</body>
+</html>

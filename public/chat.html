@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chat</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    /* Reset default margin and padding */
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    .sender {
+      background-color: #c1e2b3;
+      text-align: right;
+    }
+
+    .receiver {
+      background-color: #d9d9d9;
+      text-align: left;
+    }
+
+    /* Set background color and font styles */
+    body {
+      background-color: #f2f2f2;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Container styles */
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      background-color: #4267B2;
+      padding: 10px;
+      color: #fff;
+    }
+
+    .chat-header h1 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 10px;
+      overflow-y: scroll;
+    }
+
+    .chat-messages .message {
+      margin-bottom: 10px;
+    }
+
+    .chat-messages .message .sender {
+      font-weight: bold;
+      color: #4267B2;
+    }
+
+    .chat-messages .message .text {
+      margin-top: 5px;
+    }
+
+    .chat-input {
+      padding: 10px;
+      background-color: #fff;
+    }
+
+    .chat-input input[type="text"] {
+      width: calc(100% - 70px);
+      padding: 5px;
+      border-radius: 3px;
+      border: 1px solid #ccc;
+    }
+
+    .chat-input button {
+      margin-left: 10px;
+      padding: 5px 10px;
+      background-color: #4267B2;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    /* Responsive styling for mobile devices */
+    @media only screen and (max-width: 740px) {
+      .chat-container {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        box-sizing: border-box;
+      }
+
+      .chat-header h1 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+      }
+
+      .chat-messages {
+        flex: 1;
+        width: 100%;
+        overflow-y: auto;
+      }
+
+      .chat-input {
+        width: 90%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-top: 10px;
+      }
+
+      .chat-input input[type="text"] {
+        flex: 1;
+        padding: 5px;
+        border-radius: 3px;
+        border: 1px solid #ccc;
+        margin-right: 10px;
+      }
+
+      .chat-input button {
+        padding: 5px 10px;
+      }
+    }
+
+    .call-icons {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 10px;
+    }
+
+    .call-icons i {
+      font-size: 20px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    .fade-in {
+      animation: fadeIn 1s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <header class="chat-header">
+      <h1>Chat</h1>
+    </header>
+    <div class="call-icons">
+      <i class="fas fa-phone" id="voiceCallButton"></i>
+      <i class="fas fa-video" id="videoCallButton"></i>
+    </div>
+    <main id="chatContainer" class="chat-messages">
+      <!-- Add more messages here dynamically -->
+    </main>
+    <div class="chat-input">
+      <input type="text" id="messageInput" placeholder="Type a message..." />
+      <button id="sendButton"><i class="fas fa-paper-plane"></i></button>
+    </div>
+    <audio id="notificationSound" src="alert.mp3" preload="auto"></audio>
+
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js"></script>
+  <script>
+    const socket = io.connect('http://localhost:3000');
+
+    // Select elements
+    const messageInput = document.getElementById('messageInput');
+    const sendButton = document.getElementById('sendButton');
+    const chatContainer = document.getElementById('chatContainer');
+
+    const voiceCallButton = document.getElementById('voiceCallButton');
+    const videoCallButton = document.getElementById('videoCallButton');
+
+    voiceCallButton.addEventListener('click', startVoiceCall);
+    videoCallButton.addEventListener('click', startVideoCall);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get('username');
+
+    let isConnected = false;
+
+    if (username) {
+      const text = `${username} has joined the chat`;
+      const joinMessage = { sender: 'System', text };
+      appendMessage(joinMessage);
+      socket.emit('chat message', { sender: username, text });
+      isConnected = true;
+    }
+
+    // Event listener for window unload or tab close
+    window.addEventListener('beforeunload', function () {
+      if (isConnected) {
+        const text = `${username} has disconnected from the chat`;
+        const leaveMessage = { sender: 'System', text };
+        appendMessage(leaveMessage);
+        socket.emit('chat message', { sender: username, text });
+      }
+    });
+
+    // Event listener for send button click and enter key press
+    function sendMessage() {
+      const message = messageInput.value;
+      if (message.trim() !== '') {
+        socket.emit('chat message', { sender: username, text: message });
+        messageInput.value = '';
+      }
+    }
+
+    sendButton.addEventListener('click', function () {
+      sendMessage();
+    });
+
+    // Event listener for enter key press
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' && document.activeElement === messageInput) {
+        event.preventDefault(); // Prevent the default behavior of the enter key
+        sendMessage();
+      }
+    });
+
+    function startVoiceCall() {
+      // Implement voice call functionality using WebRTC
+      // Add your own code here to initiate a voice call
+      console.log('Starting voice call...');
+    }
+
+    function startVideoCall() {
+      // Implement video call functionality using WebRTC
+      // Add your own code here to initiate a video call
+      console.log('Starting video call...');
+    }
+
+    // Event listener for receiving chat messages
+    socket.on('chat message', function (message) {
+      appendMessage(message);
+      triggerNotification(message); // Trigger a notification for new messages
+    });
+
+    // Function to append a new message to the chat window
+    function appendMessage(message) {
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('message', 'fade-in');
+      messageElement.innerHTML = `
+        <span class="sender">${message.sender}:</span>
+        <p class="text">${message.text}</p>
+        <span class="time">${moment().format('h:mm a')}</span>
+      `;
+      chatContainer.appendChild(messageElement);
+      chatContainer.scrollTop = chatContainer.scrollHeight; // Scroll to the bottom
+    }
+
+    // Function to trigger a browser notification for new messages
+    function triggerNotification(message) {
+      // Check if the current page is focused
+      const isPageFocused = document.hasFocus();
+
+      // If the page is not focused, trigger the notification
+      if (!isPageFocused && Notification.permission === 'granted') {
+        const notification = new Notification('New Message', {
+          body: `You have a new message from ${message.sender}`,
+          icon: 'notification-icon.png'
+        });
+
+        // Play the notification sound
+        const notificationSound = document.getElementById('notificationSound');
+        notificationSound.play();
+      }
+    }
+
+    // Request permission for browser notifications
+    if (Notification.permission !== 'granted') {
+      Notification.requestPermission().then(function (permission) {
+        if (permission === 'granted') {
+          console.log('Notification permission granted.');
+        }
+      });
+    }
+  </script>
+</body>
+
+</html>

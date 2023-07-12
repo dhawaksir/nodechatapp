@@ -1,0 +1,155 @@
+ <!DOCTYPE html>
+<html>
+<head>
+	<title>Chater</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<style>
+		/* Reset default margin and padding */
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		/* Set background color and font styles */
+		body {
+			background-color: #f2f2f2;
+			font-family: Arial, sans-serif;
+		}
+
+		/* Container styles */
+		.join-container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			height: 100vh;
+		}
+
+		/* Header styles */
+		.join-header {
+			text-align: center;
+			margin-bottom: 2rem;
+		}
+
+		.join-header h1 {
+			font-size: 2.5rem;
+			color: #333;
+		}
+
+		/* Main styles */
+		.join-main {
+			background-color: #fff;
+			padding: 2rem;
+			border-radius: 5px;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+		}
+
+		/* Form control styles */
+		.form-control {
+			margin-bottom: 1rem;
+		}
+
+		.form-control label {
+			font-weight: bold;
+			margin-bottom: 0.5rem;
+			color: #333;
+		}
+
+		.form-control input,
+		.form-control select {
+			width: 100%;
+			padding: 0.5rem;
+			border-radius: 3px;
+			border: 1px solid #ccc;
+		}
+
+		/* Button styles */
+		.btn {
+			display: inline-block;
+			padding: 0.5rem 1rem;
+			background-color: #4CAF50;
+			color: #fff;
+			border: none;
+			border-radius: 3px;
+			cursor: pointer;
+			font-weight: bold;
+		}
+
+		.btn:hover {
+			background-color: #45a049;
+		}
+
+		/* Animation styles */
+		@keyframes fadeIn {
+			0% {
+				opacity: 0;
+				transform: translateY(20px);
+			}
+			100% {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		.fade-in {
+			animation: fadeIn 1s ease;
+		}
+	</style>
+</head>
+<body>
+	<div class="join-container">
+		<header class="join-header">
+			<h1><i class="fas fa-smile"></i> Chater</h1>
+		</header>
+		<main class="join-main">
+			<form id="joinForm">
+				<div class="form-control">
+					<label for="username">Username</label>
+					<input type="text" name="username" id="username" placeholder="Enter nickname..." required />
+				</div>
+				<div class="form-control">
+					<label for="room">Room</label>
+					<select name="room" id="room-name">
+						<option value="study">study</option>
+						<option value="outing">outing</option>
+						<option value="programming">programming</option>
+						<option value="guffgaff">guffgaff</option>
+						<option value="discussion">discussion</option>
+					</select>
+				</div>
+				<button type="submit" class="btn">Join Chat</button>
+			</form>
+		</main>
+	</div>
+	<script>
+		const joinForm = document.getElementById('joinForm');
+
+		joinForm.addEventListener('submit', (event) => {
+			event.preventDefault();
+
+			// Retrieve form data
+			const username = document.getElementById('username').value;
+			const room = document.getElementById('room-name').value;
+
+			// Send room selection to the backend server
+			fetch('/store-room', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ username, room })
+			})
+			.then(response => {
+				// Redirect to chat.html with query parameters
+				window.location.href = `chat.html?username=${encodeURIComponent(username)}&room=${encodeURIComponent(room)}`;
+			})
+			.catch(error => {
+				console.log('Error storing room selection:', error);
+			});
+		});
+	</script>
+</body>
+</html>  
+
+
+
